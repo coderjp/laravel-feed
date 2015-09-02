@@ -66,8 +66,6 @@ class Feed
             $description = mb_substr($description, 0, $this->shorteningLimit, 'UTF-8');
         }
 
-        $pubdate = $this->formatDate($pubdate);
-
         $this->items[] = array(
             'title' => $title,
             'author' => $author,
@@ -94,8 +92,6 @@ class Feed
             $a['description'] = mb_substr($a['description'], 0, $this->shorteningLimit, 'UTF-8');
         }
 
-        $a['pubdate'] = $this->formatDate($a['pubdate']);
-
         $this->items[] = $a;
     }
 
@@ -112,7 +108,6 @@ class Feed
     {
 
         if ($format == null && $this->customView == null) $format = "atom";
-        if ($this->customView == null) $this->customView = $format;
         if ($cache != null) $this->caching = $cache;
         if ($key != null) $this->cacheKey = $key;
 
@@ -324,7 +319,7 @@ class Feed
             switch ($this->dateFormat)
             {
                 case "carbon":
-                    $date = date('c', strtotime($date->toDateTimeString()));
+                    $date = $date->format('D, d M Y H:i:s O');
                     break;
                 case "timestamp":
                     $date = date('c', $date);
@@ -339,7 +334,7 @@ class Feed
             switch ($this->dateFormat)
             {
                 case "carbon":
-                    $date = date('D, d M Y H:i:s O', strtotime($date->toDateTimeString()));
+                    $date = $date->format('D, d M Y H:i:s O');
                     break;
                 case "timestamp":
                     $date = date('D, d M Y H:i:s O', $date);
